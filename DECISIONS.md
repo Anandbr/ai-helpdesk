@@ -71,3 +71,19 @@ Production improvement:
   Add operating_days field to school configuration table.
   check_calendar reads operating days from DB instead of hardcoding weekdays.
   Schools with Saturday programs could configure this themselves.
+
+## Authentication — PIN vs Login
+
+Current: single PIN stored in sessionStorage. Clears when browser tab closes.
+Operator must re-enter PIN each new session.
+
+Assumption:
+  PIN is for a prototype demo. Simple to implement and explain.
+
+Production:
+  Replace PIN with proper authentication:
+  - Email/password login
+  - JWT tokens with expiry
+  - Role-based access control (admin vs teacher vs owner)
+  - Audit log of who changed what policy
+  - Multi-factor authentication for sensitive operations like custody policies
