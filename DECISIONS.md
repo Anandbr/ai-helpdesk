@@ -54,3 +54,20 @@ Assumption:
 Production improvement:
   Before showing the approval form, check for similar existing policies and surface them to the operator.
   Prevent the collision before it happens rather than erroring after.
+
+  ## Weekend closure hardcoded in check_calendar
+
+We assume the school is always closed on Saturdays and Sundays.
+
+This is hardcoded in tools.py:
+  if d.weekday() >= 5: return closed
+
+Not configurable by the operator.
+
+Assumption:
+  Standard daycare is Mon-Fri only.
+  
+Production improvement:
+  Add operating_days field to school configuration table.
+  check_calendar reads operating days from DB instead of hardcoding weekdays.
+  Schools with Saturday programs could configure this themselves.
