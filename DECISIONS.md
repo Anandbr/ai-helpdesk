@@ -97,3 +97,17 @@ For 2 routes: window.location.pathname check + history.pushState + popstate list
 
 Upgrade path: adding a third route (teacher view, analytics, etc.) is the threshold to add
 React Router. Refactor is straightforward — wrap in BrowserRouter, replace pathname checks with Route components.
+
+## No policy deletion
+
+Intentional omission.
+Deletion risks:
+  - Breaking citation links in question logs
+  - Accidental removal with no undo
+  - Especially dangerous for safety policies
+
+Production approach:
+  - Soft delete — mark policy as inactive
+  - Policy stays in DB, not shown to AI or parents
+  - Can be restored if needed
+  - Or archive flow with confirmation step

@@ -78,6 +78,10 @@ function FormField({ label, children }) {
   );
 }
 
+// ─────────────────────────────────────────
+// Questions Tab
+// ─────────────────────────────────────────
+
 function QuestionsTab({ refresh }) {
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -87,9 +91,7 @@ function QuestionsTab({ refresh }) {
   useEffect(() => {
     setLoading(true);
     API.operator.questions()
-      .then(data => {
-        setItems(data);
-      })
+      .then(data => setItems(data))
       .catch(() => {})
       .finally(() => setLoading(false));
   }, [refresh]);
@@ -104,33 +106,18 @@ function QuestionsTab({ refresh }) {
   });
 
   if (loading) return <Loading />;
-  if (!items.length) return (
-    <Empty text="No questions yet" />
-  );
+  if (!items.length) return <Empty text="No questions yet" />;
 
   return (
-    <div style={{
-      display: "flex",
-      flexDirection: "column",
-      gap: "12px"
-    }}>
-      {/* Sort control */}
-      <div style={{
-        display: "flex",
-        gap: "8px",
-        marginBottom: "4px"
-      }}>
+    <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
+      <div style={{ display: "flex", gap: "8px", marginBottom: "4px" }}>
         {["severity", "time"].map(s => (
           <button
             key={s}
             onClick={() => setSortBy(s)}
             style={{
-              background: sortBy === s
-                ? "var(--bw-indigo)"
-                : "white",
-              color: sortBy === s
-                ? "white"
-                : "var(--bw-text-soft)",
+              background: sortBy === s ? "var(--bw-indigo)" : "white",
+              color: sortBy === s ? "white" : "var(--bw-text-soft)",
               border: "1.5px solid var(--bw-border)",
               borderRadius: "20px",
               padding: "0.3rem 0.75rem",
@@ -162,16 +149,13 @@ function QuestionsTab({ refresh }) {
           </div>
 
           <div
-            onClick={() => setExpanded(
-              expanded === item.id ? null : item.id
-            )}
+            onClick={() => setExpanded(expanded === item.id ? null : item.id)}
             style={{
               fontSize: "0.85rem",
               color: "var(--bw-text-soft)",
               overflow: "hidden",
               display: "-webkit-box",
-              WebkitLineClamp: expanded === item.id
-                ? "unset" : 2,
+              WebkitLineClamp: expanded === item.id ? "unset" : 2,
               WebkitBoxOrient: "vertical",
               marginBottom: "0.5rem",
               cursor: "pointer",
@@ -186,9 +170,7 @@ function QuestionsTab({ refresh }) {
             display: "flex",
             justifyContent: "space-between",
           }}>
-            <span>
-              {new Date(item.timestamp).toLocaleString()}
-            </span>
+            <span>{new Date(item.timestamp).toLocaleString()}</span>
             <span style={{
               color: ACTION_COLOR[item.action_taken],
               fontWeight: 600,
@@ -203,6 +185,10 @@ function QuestionsTab({ refresh }) {
     </div>
   );
 }
+
+// ─────────────────────────────────────────
+// Queue Tab
+// ─────────────────────────────────────────
 
 function QueueTab({ refresh, onPolicyCreated }) {
   const [gaps, setGaps] = useState([]);
@@ -219,9 +205,7 @@ function QueueTab({ refresh, onPolicyCreated }) {
   }, [refresh]);
 
   async function dismiss(id) {
-    await API.operator.updateGap(id, {
-      status: "dismissed"
-    });
+    await API.operator.updateGap(id, { status: "dismissed" });
     setGaps(prev => prev.map(g =>
       g.id === id ? { ...g, status: "dismissed" } : g
     ));
@@ -251,21 +235,16 @@ function QueueTab({ refresh, onPolicyCreated }) {
       topic: form.topic,
       content: form.content,
       action: form.action,
-      ...(form.action !== "answer" &&
-        form.escalation_contact
+      ...(form.action !== "answer" && form.escalation_contact
         ? { escalation_contact: form.escalation_contact }
         : {}),
     };
 
     try {
       await API.operator.createPolicy(body);
-      await API.operator.updateGap(gap.id, {
-        status: "approved"
-      });
+      await API.operator.updateGap(gap.id, { status: "approved" });
       setGaps(prev => prev.map(g =>
-        g.id === gap.id
-          ? { ...g, status: "approved" }
-          : g
+        g.id === gap.id ? { ...g, status: "approved" } : g
       ));
       setApproving(null);
       onPolicyCreated();
@@ -275,19 +254,13 @@ function QueueTab({ refresh, onPolicyCreated }) {
   }
 
   if (loading) return <Loading />;
-  if (!gaps.length) return (
-    <Empty text="No gaps in the queue" />
-  );
+  if (!gaps.length) return <Empty text="No gaps in the queue" />;
 
   const pending = gaps.filter(g => g.status === "pending");
   const resolved = gaps.filter(g => g.status !== "pending");
 
   return (
-    <div style={{
-      display: "flex",
-      flexDirection: "column",
-      gap: "12px"
-    }}>
+    <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
       {pending.map(gap => (
         <div key={gap.id} style={{
           background: "var(--bw-surface)",
@@ -301,20 +274,12 @@ function QueueTab({ refresh, onPolicyCreated }) {
             marginBottom: "0.75rem",
             gap: "8px",
           }}>
-            <div style={{
-              fontWeight: 700,
-              fontSize: "0.95rem",
-              flex: 1,
-            }}>
+            <div style={{ fontWeight: 700, fontSize: "0.95rem", flex: 1 }}>
               {gap.question}
             </div>
             <div style={{
-              background: gap.count >= 3
-                ? "var(--bw-orange)"
-                : "var(--bw-bubble-gray)",
-              color: gap.count >= 3
-                ? "white"
-                : "var(--bw-text-soft)",
+              background: gap.count >= 3 ? "var(--bw-orange)" : "var(--bw-bubble-gray)",
+              color: gap.count >= 3 ? "white" : "var(--bw-text-soft)",
               borderRadius: "20px",
               padding: "0.2rem 0.6rem",
               fontSize: "0.75rem",
@@ -337,18 +302,14 @@ function QueueTab({ refresh, onPolicyCreated }) {
               <FormField label="Title">
                 <input
                   value={form.title}
-                  onChange={e => setForm(f => ({
-                    ...f, title: e.target.value
-                  }))}
+                  onChange={e => setForm(f => ({ ...f, title: e.target.value }))}
                   style={inputStyle}
                 />
               </FormField>
               <FormField label="Topic">
                 <input
                   value={form.topic}
-                  onChange={e => setForm(f => ({
-                    ...f, topic: e.target.value
-                  }))}
+                  onChange={e => setForm(f => ({ ...f, topic: e.target.value }))}
                   placeholder="e.g. health, billing, hours"
                   style={inputStyle}
                 />
@@ -356,32 +317,21 @@ function QueueTab({ refresh, onPolicyCreated }) {
               <FormField label="Answer">
                 <textarea
                   value={form.content}
-                  onChange={e => setForm(f => ({
-                    ...f, content: e.target.value
-                  }))}
+                  onChange={e => setForm(f => ({ ...f, content: e.target.value }))}
                   placeholder="Write the answer parents should get..."
                   rows={4}
-                  style={{
-                    ...inputStyle,
-                    resize: "vertical"
-                  }}
+                  style={{ ...inputStyle, resize: "vertical" }}
                 />
               </FormField>
               <FormField label="Action">
                 <select
                   value={form.action}
-                  onChange={e => setForm(f => ({
-                    ...f, action: e.target.value
-                  }))}
+                  onChange={e => setForm(f => ({ ...f, action: e.target.value }))}
                   style={inputStyle}
                 >
                   <option value="answer">Answer</option>
-                  <option value="answer_then_flag">
-                    Answer + flag staff
-                  </option>
-                  <option value="escalate">
-                    Always escalate
-                  </option>
+                  <option value="answer_then_flag">Answer + flag staff</option>
+                  <option value="escalate">Always escalate</option>
                 </select>
               </FormField>
               {form.action !== "answer" && (
@@ -389,24 +339,17 @@ function QueueTab({ refresh, onPolicyCreated }) {
                   <input
                     value={form.escalation_contact}
                     onChange={e => setForm(f => ({
-                      ...f,
-                      escalation_contact: e.target.value
+                      ...f, escalation_contact: e.target.value
                     }))}
                     placeholder="e.g. Director Maria Torres"
                     style={inputStyle}
                   />
                 </FormField>
               )}
-              <div style={{
-                display: "flex",
-                gap: "8px"
-              }}>
+              <div style={{ display: "flex", gap: "8px" }}>
                 <button
                   onClick={() => submitApprove(gap)}
-                  disabled={
-                    !form.content.trim() ||
-                    !form.title.trim()
-                  }
+                  disabled={!form.content.trim() || !form.title.trim()}
                   style={{
                     background: "var(--bw-green)",
                     color: "white",
@@ -415,9 +358,7 @@ function QueueTab({ refresh, onPolicyCreated }) {
                     padding: "0.5rem 1rem",
                     fontSize: "0.85rem",
                     fontWeight: 600,
-                    opacity:
-                      !form.content.trim() ||
-                      !form.title.trim() ? 0.5 : 1,
+                    opacity: !form.content.trim() || !form.title.trim() ? 0.5 : 1,
                   }}
                 >
                   Add to Knowledge Base
@@ -488,14 +429,10 @@ function QueueTab({ refresh, onPolicyCreated }) {
               padding: "1rem",
               opacity: 0.5,
             }}>
-              <div style={{ fontSize: "0.9rem" }}>
-                {gap.question}
-              </div>
+              <div style={{ fontSize: "0.9rem" }}>{gap.question}</div>
               <div style={{
                 fontSize: "0.75rem",
-                color: gap.status === "approved"
-                  ? "var(--bw-green)"
-                  : "var(--bw-text-soft)",
+                color: gap.status === "approved" ? "var(--bw-green)" : "var(--bw-text-soft)",
                 marginTop: "0.25rem",
                 fontWeight: 600,
               }}>
@@ -509,12 +446,24 @@ function QueueTab({ refresh, onPolicyCreated }) {
   );
 }
 
+// ─────────────────────────────────────────
+// Knowledge Base Tab
+// ─────────────────────────────────────────
+
 function KnowledgeTab({ refresh }) {
   const [policies, setPolicies] = useState([]);
   const [stale, setStale] = useState([]);
   const [loading, setLoading] = useState(true);
   const [editing, setEditing] = useState(null);
   const [editForm, setEditForm] = useState({});
+  const [showNewForm, setShowNewForm] = useState(false);
+  const [newForm, setNewForm] = useState({
+    title: "",
+    topic: "",
+    content: "",
+    action: "answer",
+    escalation_contact: "",
+  });
 
   useEffect(() => {
     setLoading(true);
@@ -562,14 +511,178 @@ function KnowledgeTab({ refresh }) {
     }
   }
 
+  async function submitNew() {
+    const body = {
+      title: newForm.title,
+      topic: newForm.topic,
+      content: newForm.content,
+      action: newForm.action,
+      ...(newForm.action !== "answer" && newForm.escalation_contact
+        ? { escalation_contact: newForm.escalation_contact }
+        : {}),
+    };
+
+    try {
+      const created = await API.operator.createPolicy(body);
+      setPolicies(prev => [...prev, created]);
+      setShowNewForm(false);
+      setNewForm({
+        title: "",
+        topic: "",
+        content: "",
+        action: "answer",
+        escalation_contact: "",
+      });
+    } catch (err) {
+      alert(`Failed: ${err.message}`);
+    }
+  }
+
   if (loading) return <Loading />;
 
   return (
-    <div style={{
-      display: "flex",
-      flexDirection: "column",
-      gap: "24px"
-    }}>
+    <div style={{ display: "flex", flexDirection: "column", gap: "24px" }}>
+
+      {/* Add New Policy */}
+      <div>
+        {!showNewForm ? (
+          <button
+            onClick={() => setShowNewForm(true)}
+            style={{
+              background: "var(--bw-indigo)",
+              color: "white",
+              border: "none",
+              borderRadius: "8px",
+              padding: "0.5rem 1rem",
+              fontSize: "0.85rem",
+              fontWeight: 600,
+            }}
+          >
+            + Add New Policy
+          </button>
+        ) : (
+          <div style={{
+            background: "var(--bw-surface)",
+            borderRadius: "var(--radius-card)",
+            padding: "1rem",
+            border: "1.5px solid var(--bw-indigo)",
+          }}>
+            <div style={{
+              fontWeight: 700,
+              marginBottom: "1rem",
+              color: "var(--bw-indigo)",
+            }}>
+              New Policy
+            </div>
+            <div style={{
+              display: "flex",
+              flexDirection: "column",
+              gap: "10px",
+            }}>
+              <FormField label="Title">
+                <input
+                  value={newForm.title}
+                  onChange={e => setNewForm(f => ({
+                    ...f, title: e.target.value
+                  }))}
+                  placeholder="e.g. Swimming Lessons"
+                  style={inputStyle}
+                />
+              </FormField>
+              <FormField label="Topic">
+                <input
+                  value={newForm.topic}
+                  onChange={e => setNewForm(f => ({
+                    ...f, topic: e.target.value
+                  }))}
+                  placeholder="e.g. activities, health, billing"
+                  style={inputStyle}
+                />
+              </FormField>
+              <FormField label="Content">
+                <textarea
+                  value={newForm.content}
+                  onChange={e => setNewForm(f => ({
+                    ...f, content: e.target.value
+                  }))}
+                  placeholder="Write the answer parents should get..."
+                  rows={4}
+                  style={{ ...inputStyle, resize: "vertical" }}
+                />
+              </FormField>
+              <FormField label="Action">
+                <select
+                  value={newForm.action}
+                  onChange={e => setNewForm(f => ({
+                    ...f, action: e.target.value
+                  }))}
+                  style={inputStyle}
+                >
+                  <option value="answer">Answer</option>
+                  <option value="answer_then_flag">
+                    Answer + flag staff
+                  </option>
+                  <option value="escalate">
+                    Always escalate
+                  </option>
+                </select>
+              </FormField>
+              {newForm.action !== "answer" && (
+                <FormField label="Escalation Contact">
+                  <input
+                    value={newForm.escalation_contact}
+                    onChange={e => setNewForm(f => ({
+                      ...f, escalation_contact: e.target.value
+                    }))}
+                    placeholder="e.g. Director Maria Torres"
+                    style={inputStyle}
+                  />
+                </FormField>
+              )}
+              <div style={{ display: "flex", gap: "8px" }}>
+                <button
+                  onClick={submitNew}
+                  disabled={
+                    !newForm.title.trim() ||
+                    !newForm.content.trim() ||
+                    !newForm.topic.trim()
+                  }
+                  style={{
+                    background: "var(--bw-green)",
+                    color: "white",
+                    border: "none",
+                    borderRadius: "8px",
+                    padding: "0.5rem 1rem",
+                    fontSize: "0.85rem",
+                    fontWeight: 600,
+                    opacity:
+                      !newForm.title.trim() ||
+                      !newForm.content.trim() ||
+                      !newForm.topic.trim() ? 0.5 : 1,
+                  }}
+                >
+                  Save Policy
+                </button>
+                <button
+                  onClick={() => setShowNewForm(false)}
+                  style={{
+                    background: "var(--bw-bubble-gray)",
+                    color: "var(--bw-text-soft)",
+                    border: "none",
+                    borderRadius: "8px",
+                    padding: "0.5rem 1rem",
+                    fontSize: "0.85rem",
+                  }}
+                >
+                  Cancel
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
+
+      {/* Grouped Policies */}
       {Object.entries(grouped).sort().map(([topic, items]) => (
         <div key={topic}>
           <div style={{
@@ -589,8 +702,7 @@ function KnowledgeTab({ refresh }) {
           }}>
             {items.map(policy => {
               const isStale = stale.includes(policy.id);
-              const isSensitive =
-                policy.sensitivity === "sensitive";
+              const isSensitive = policy.sensitivity === "sensitive";
               const isEditing = editing === policy.id;
 
               return (
@@ -609,35 +721,25 @@ function KnowledgeTab({ refresh }) {
                     marginBottom: "0.5rem",
                     gap: "8px",
                   }}>
-                    <div style={{
-                      fontWeight: 700,
-                      fontSize: "0.95rem",
-                    }}>
+                    <div style={{ fontWeight: 700, fontSize: "0.95rem" }}>
                       {policy.title}
                       {isSensitive && (
-                        <span style={{ marginLeft: "6px" }}>
-                          🔒
-                        </span>
+                        <span style={{ marginLeft: "6px" }}>🔒</span>
                       )}
                     </div>
-                    <div style={{
-                      display: "flex",
-                      gap: "6px",
-                      flexShrink: 0
-                    }}>
-                      {isStale && (
-                        <span style={{
-                          background: "var(--bw-orange)",
-                          color: "white",
-                          borderRadius: "20px",
-                          padding: "0.15rem 0.5rem",
-                          fontSize: "0.7rem",
-                          fontWeight: 700,
-                        }}>
-                          ⚠ Expires {policy.expires}
-                        </span>
-                      )}
-                    </div>
+                    {isStale && (
+                      <span style={{
+                        background: "var(--bw-orange)",
+                        color: "white",
+                        borderRadius: "20px",
+                        padding: "0.15rem 0.5rem",
+                        fontSize: "0.7rem",
+                        fontWeight: 700,
+                        flexShrink: 0,
+                      }}>
+                        ⚠ Expires {policy.expires}
+                      </span>
+                    )}
                   </div>
 
                   {isEditing ? (
@@ -662,16 +764,10 @@ function KnowledgeTab({ refresh }) {
                             ...f, content: e.target.value
                           }))}
                           rows={4}
-                          style={{
-                            ...inputStyle,
-                            resize: "vertical"
-                          }}
+                          style={{ ...inputStyle, resize: "vertical" }}
                         />
                       </FormField>
-                      <div style={{
-                        display: "flex",
-                        gap: "8px"
-                      }}>
+                      <div style={{ display: "flex", gap: "8px" }}>
                         <button
                           onClick={() => saveEdit(policy)}
                           style={{
@@ -710,8 +806,7 @@ function KnowledgeTab({ refresh }) {
                         marginBottom: "0.5rem",
                       }}>
                         {policy.content.slice(0, 120)}
-                        {policy.content.length > 120
-                          ? "…" : ""}
+                        {policy.content.length > 120 ? "…" : ""}
                       </div>
                       <div style={{
                         display: "flex",
@@ -767,6 +862,10 @@ function KnowledgeTab({ refresh }) {
   );
 }
 
+// ─────────────────────────────────────────
+// Main OperatorView
+// ─────────────────────────────────────────
+
 export default function OperatorView({ onLogout, navigate }) {
   const [tab, setTab] = useState("questions");
   const [refresh, setRefresh] = useState(0);
@@ -787,7 +886,6 @@ export default function OperatorView({ onLogout, navigate }) {
       height: "100dvh",
       background: "var(--bw-bg)",
     }}>
-      {/* Header */}
       <div style={{
         background: "var(--bw-indigo)",
         padding: "1rem 1.25rem",
@@ -848,7 +946,6 @@ export default function OperatorView({ onLogout, navigate }) {
         </div>
       </div>
 
-      {/* Tabs */}
       <div style={{
         display: "flex",
         borderBottom: "1px solid var(--bw-border)",
@@ -880,7 +977,6 @@ export default function OperatorView({ onLogout, navigate }) {
         ))}
       </div>
 
-      {/* Tab content */}
       <div style={{
         flex: 1,
         overflowY: "auto",
