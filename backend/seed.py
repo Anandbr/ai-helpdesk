@@ -59,5 +59,5 @@ def seed():
         f"{len(closures)} closures."
     )
 
-if __name__ == "main":
+if __name__ == "__main__":
     seed()

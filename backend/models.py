@@ -1,4 +1,4 @@
-from datetime import date_type, datetime
+from datetime import date as date_type, datetime
 from typing import Literal, Optional
 from pydantic import BaseModel, model_validator
 
@@ -121,7 +121,7 @@ class AgentResponse(BaseModel):
     escalation_reason: Optional[str] = None
     escalation_contact: Optional[str] = None
 
-    @model_validator(model="after")
+    @model_validator(mode="after")
     def check_escalation(self):
         if(
             self.action_taken in ("escalate", "emergency")
@@ -144,9 +144,9 @@ class QuestionLog(BaseModel):
     question: str
     answer: str
     source_policy_ids: list[str]
-    action_taken = ActionTaken
-    confidence = Confidence
-    escalation_reason = Optional[str] = None
+    action_taken: ActionTaken
+    confidence: Confidence
+    escalation_reason: Optional[str] = None
     timestamp: datetime = datetime.now()
 
 class GapEntry(BaseModel):

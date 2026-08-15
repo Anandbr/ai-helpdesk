@@ -7,7 +7,7 @@ from datetime import datetime, timedelta
 
 DB_PATH = os.getenv(
     "DB_PATH",
-    os.path.join(os.path.dirname(__file__), "data", "frontdek.db")
+    os.path.join(os.path.dirname(__file__), "data", "frontdesk.db")
 )
 
 SCHEMA = """

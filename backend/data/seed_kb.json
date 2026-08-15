@@ -1,0 +1,173 @@
+{
+  "policies": [
+    {
+      "id": "hours_regular",
+      "topic": "hours",
+      "title": "Hours of Operation",
+      "content": "We're open Monday through Friday, 7:00 AM to 6:00 PM. Doors open at 7:00 AM sharp — early drop-off is not available. Pickup by 6:00 PM.",
+      "action": "answer",
+      "sensitivity": "normal",
+      "escalation_contact": null,
+      "last_verified": "2026-08-01"
+    },
+    {
+      "id": "illness_exclusion",
+      "topic": "health",
+      "title": "Illness & Exclusion Policy",
+      "content": "Children with a fever of 100.4°F or higher, vomiting, diarrhea, or an undiagnosed rash must stay home. Your child can return once they've been symptom-free for 24 hours without medication. After an absence of 3 or more days, please bring a doctor's note.",
+      "action": "answer_then_flag",
+      "sensitivity": "normal",
+      "escalation_contact": "Director Maria Torres",
+      "last_verified": "2026-08-01"
+    },
+    {
+      "id": "tuition_rates",
+      "topic": "billing",
+      "title": "Tuition Rates",
+      "content": "Monthly tuition: Infant (6 weeks-12 months) $2,200 | Toddler (1-2 years) $1,900 | Preschool (3 years) $1,600 | Pre-K (4-5 years) $1,400. A 10% sibling discount applies. Tuition is due on the 1st of each month. A $50 late fee applies after the 5th.",
+      "action": "answer",
+      "sensitivity": "normal",
+      "escalation_contact": null,
+      "last_verified": "2026-08-01"
+    },
+    {
+      "id": "billing_disputes",
+      "topic": "billing",
+      "title": "Billing Questions & Disputes",
+      "content": "For billing questions or to dispute a charge, please contact our administrative office directly. Billing matters cannot be resolved over chat.",
+      "action": "escalate",
+      "sensitivity": "normal",
+      "escalation_contact": "Office Manager Linda Park at billing@sunshineelc.com or (206) 555-0124",
+      "last_verified": "2026-08-01"
+    },
+    {
+      "id": "lunch_program",
+      "topic": "food",
+      "title": "Meals & Lunch Program",
+      "content": "All meals are included in tuition. We provide breakfast at 8:00 AM, lunch at 12:00 PM, and an afternoon snack at 3:00 PM. You do not need to pack food — ever. If you forgot to pack lunch, no worries: your child will be fed the same meal as everyone else.",
+      "action": "answer",
+      "sensitivity": "normal",
+      "escalation_contact": null,
+      "last_verified": "2026-08-01"
+    },
+    {
+      "id": "authorized_pickup",
+      "topic": "safety",
+      "title": "Authorized Pickup",
+      "content": "Only adults listed on your authorized pickup form may collect your child. Photo ID is required for anyone not recognized by staff. To add or remove someone from your authorized list, the primary account holder must update the form in person.",
+      "action": "escalate",
+      "sensitivity": "sensitive",
+      "escalation_contact": "Front desk staff in person, or call (206) 555-0123",
+      "last_verified": "2026-08-01"
+    },
+    {
+      "id": "custody_court_orders",
+      "topic": "safety",
+      "title": "Custody & Court Orders",
+      "content": "We follow court custody orders exactly as written. Any change requires the director in person — it cannot be handled over chat or phone. If you have a new or updated court order, bring the original document to Director Maria Torres.",
+      "action": "escalate",
+      "sensitivity": "sensitive",
+      "escalation_contact": "Director Maria Torres",
+      "last_verified": "2026-08-01"
+    },
+    {
+      "id": "tours_enrollment",
+      "topic": "enrollment",
+      "title": "Tours & Enrollment",
+      "content": "We are currently accepting enrollments for Fall 2026. Tours are available Tuesday and Thursday at 10:00 AM. To schedule a tour call (206) 555-0123 or email info@sunshineelc.com. Infant spots are limited and a waitlist is available.",
+      "action": "answer_then_flag",
+      "sensitivity": "normal",
+      "escalation_contact": "Enrollment Coordinator at info@sunshineelc.com",
+      "last_verified": "2026-08-01",
+      "expires": "2026-09-01"
+    },
+    {
+      "id": "late_pickup",
+      "topic": "daily",
+      "title": "Late Pickup Policy",
+      "content": "Pickup is by 6:00 PM. A $1 per minute fee applies starting at 6:01 PM. After 6:30 PM with no contact, we are required by state licensing to begin emergency procedures. Please call us immediately if you will be late.",
+      "action": "answer",
+      "sensitivity": "normal",
+      "escalation_contact": null,
+      "last_verified": "2026-08-01"
+    },
+    {
+      "id": "medication",
+      "topic": "health",
+      "title": "Medication Administration",
+      "content": "Staff can administer prescription medication with a completed Medication Authorization Form signed by a parent and physician. We do not administer over-the-counter medication unless prescribed.",
+      "action": "answer_then_flag",
+      "sensitivity": "normal",
+      "escalation_contact": "Director Maria Torres",
+      "last_verified": "2026-08-01"
+    },
+    {
+      "id": "allergies_food",
+      "topic": "food",
+      "title": "Food Allergies",
+      "content": "We take food allergies seriously. All allergies must be documented in writing before your child's first day. Life-threatening allergies require an EpiPen on file and a signed Emergency Action Plan.",
+      "action": "answer_then_flag",
+      "sensitivity": "normal",
+      "escalation_contact": "Director Maria Torres",
+      "last_verified": "2026-08-01"
+    },
+    {
+      "id": "incidents_biting",
+      "topic": "behavior",
+      "title": "Incidents & Biting Policy",
+      "content": "If your child is involved in a biting incident, you will receive a written incident report at pickup. We do not share the name of the other child involved. Our teachers use developmentally appropriate strategies to address biting.",
+      "action": "answer_then_flag",
+      "sensitivity": "normal",
+      "escalation_contact": "Director Maria Torres",
+      "last_verified": "2026-08-01"
+    },
+    {
+      "id": "what_to_pack",
+      "topic": "daily",
+      "title": "What to Pack",
+      "content": "Please pack one complete change of clothes labeled with your child's name. You do not need to pack food, drinks, or diapers — all are provided.",
+      "action": "answer",
+      "sensitivity": "normal",
+      "escalation_contact": null,
+      "last_verified": "2026-08-01"
+    },
+    {
+      "id": "withdrawal_notice",
+      "topic": "enrollment",
+      "title": "Withdrawal & Notice Period",
+      "content": "We require 30 days written notice before withdrawing your child. Notice must be submitted in writing via email to info@sunshineelc.com. Tuition is due for the full 30-day notice period regardless of attendance.",
+      "action": "answer",
+      "sensitivity": "normal",
+      "escalation_contact": null,
+      "last_verified": "2026-08-01"
+    },
+    {
+      "id": "holiday_closures",
+      "topic": "hours",
+      "title": "Holiday Closures",
+      "content": "We close on all federal holidays. We also close December 24th through January 1st for winter break. Closure dates are posted in the parent app by October 1st each year.",
+      "action": "answer",
+      "sensitivity": "normal",
+      "escalation_contact": null,
+      "last_verified": "2026-08-01"
+    },
+    {
+      "id": "weather_closures",
+      "topic": "hours",
+      "title": "Weather & Emergency Closures",
+      "content": "If we need to close due to weather or an emergency, we notify all families by 6:00 AM via the parent app and email. Please check the app before calling the center on weather days.",
+      "action": "answer",
+      "sensitivity": "normal",
+      "escalation_contact": null,
+      "last_verified": "2026-08-01"
+    }
+  ],
+  "closures": [
+    { "name": "Labor Day", "date": "2026-09-07" },
+    { "name": "Staff In-Service Day", "date": "2026-10-09" },
+    { "name": "Veterans Day", "date": "2026-11-11" },
+    { "name": "Thanksgiving", "date": "2026-11-26" },
+    { "name": "Day After Thanksgiving", "date": "2026-11-27" },
+    { "name": "Winter Break", "start": "2026-12-24", "end": "2027-01-01" }
+  ]
+}
