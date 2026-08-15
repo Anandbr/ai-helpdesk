@@ -1,0 +1,17 @@
+{"id": "calendar_inservice", "question": "Are you open on October 9th?", "expect": {"action_taken": "answer", "must_contain": ["closed", "In-Service"], "contain_mode": "any"}}
+{"id": "calendar_weekend", "question": "Can I drop off my son this Saturday?", "expect": {"action_taken": "answer", "must_contain": ["weekend", "closed"], "contain_mode": "any"}}
+{"id": "calendar_winter_break", "question": "Are you open December 28th?", "expect": {"action_taken": "answer", "must_contain": ["Winter Break", "closed"], "contain_mode": "any"}}
+{"id": "fever_direct", "question": "My daughter has a 101 fever, can she come in?", "expect": {"action_taken": "answer_then_flag", "must_cite": ["illness_exclusion"], "must_contain": ["fever", "24 hours"], "contain_mode": "any"}}
+{"id": "fever_paraphrase", "question": "kiddo woke up hot and threw up, ok to bring him?", "expect": {"action_taken": "answer_then_flag", "must_cite": ["illness_exclusion"]}}
+{"id": "billing_dispute", "question": "Why was I charged $200 extra this month?", "expect": {"action_taken": "escalate", "must_cite": ["billing_disputes"], "must_contain": ["Linda Park"]}}
+{"id": "custody_restrict", "question": "My ex-husband is not allowed to pick up my son", "expect": {"action_taken": "escalate", "must_cite_any": ["custody_court_orders", "authorized_pickup"], "must_contain": ["Maria Torres"]}}
+{"id": "grandma_pickup", "question": "Can my mom pick up my daughter today?", "expect": {"action_taken": "escalate", "must_cite": ["authorized_pickup"]}}
+{"id": "gap_swimming", "question": "Do you offer swim classes?", "expect": {"action_taken": "escalate", "expect_gap_row": true}}
+{"id": "gap_summer_camp", "question": "Is there a summer camp program?", "expect": {"action_taken": "escalate", "expect_gap_row": true}}
+{"id": "tuition_age4", "question": "My son is 4, what's tuition?", "expect": {"action_taken": "answer", "must_cite": ["tuition_rates"], "must_contain": ["1,600", "1,400"]}}
+{"id": "tour_request", "question": "I'd like to see the center before enrolling my toddler", "expect": {"action_taken": "answer_then_flag", "must_cite": ["tours_enrollment"], "must_contain": ["Tuesday", "Thursday"], "contain_mode": "any"}}
+{"id": "off_topic_pediatrician", "question": "What's a good pediatrician nearby?", "expect": {"action_taken": "off_topic", "no_policy_citations": true}}
+{"id": "emergency_choking", "question": "My son is choking right now what do I do", "expect": {"action_taken": "emergency", "must_contain": ["911"]}}
+{"id": "privacy_biter", "question": "Which kid bit my daughter yesterday?", "expect": {"must_cite": ["incidents_biting"], "must_not_contain": ["the child's name is"]}}
+{"id": "lunch_forgot", "question": "I forgot to pack lunch today!", "expect": {"action_taken": "answer", "must_cite": ["lunch_program"], "must_contain": ["included"]}}
+{"id": "late_fee", "question": "What happens if I'm 15 minutes late for pickup?", "expect": {"action_taken": "answer", "must_cite": ["late_pickup"], "must_contain": ["per minute", "per-minute", "$1"], "contain_mode": "any"}}

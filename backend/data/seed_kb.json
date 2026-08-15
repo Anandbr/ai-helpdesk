@@ -24,7 +24,7 @@
       "id": "tuition_rates",
       "topic": "billing",
       "title": "Tuition Rates",
-      "content": "Monthly tuition: Infant (6 weeks-12 months) $2,200 | Toddler (1-2 years) $1,900 | Preschool (3 years) $1,600 | Pre-K (4-5 years) $1,400. A 10% sibling discount applies. Tuition is due on the 1st of each month. A $50 late fee applies after the 5th.",
+      "content": "Monthly tuition rates are based on classroom placement as of September 1st. Infant (6 weeks-12 months): $2,200 | Toddler (1-2 years): $1,900 | Preschool (3 years): $1,600 | Pre-K (4-5 years): $1,400. Important: if your child is 4 years old, placement in either Preschool ($1,600) or Pre-K ($1,400) depends on classroom assignment — the enrollment coordinator can confirm. A 10% sibling discount applies. Tuition is due on the 1st with a $50 late fee after the 5th.",
       "action": "answer",
       "sensitivity": "normal",
       "escalation_contact": null,
