@@ -28,3 +28,17 @@ One cluster = one gap regardless of wording.
 Or use Claude to classify incoming questions against existing gap categories before deciding to create a new one.
 
 ---
+## PolicyUpdate omits sensitivity field
+
+Operators cannot change a policy's sensitivity via the PATCH endpoint.
+
+Why:
+  Demoting a policy from sensitive to normal means a custody or safety policy could stop escalating automatically.
+  Too consequential for a casual UI edit.
+
+Assumption:
+  We assume sensitivity is set correctly at policy creation and rarely needs changing.
+  
+In production:
+  Sensitivity changes require a code change and deliberate review by an admin.
+  Could add a separate admin-only endpoint with additional confirmation step.
