@@ -55,6 +55,23 @@ class PolicyCreate(BaseModel):
     last_verified: Optional[date_type] = None
     expires: Optional[date_type] = None
 
+class PolicyUpdate(BaseModel):
+    """
+    PATCH semantics — all fields optional.
+    Send only what changed.
+    sensitivity deliberately omitted —
+    demoting a sensitive policy is too
+    consequential for a casual edit.
+    Requires code change and deliberate review.
+    """
+    title: Optional[str] = None
+    content: Optional[str] = None
+    action: Optional[
+        Literal["answer", "answer_then_flag", "escalate"]
+    ] = None
+    escalation_contact: Optional[str] = None
+    expires: Optional[date_type] = None
+
 class Closure(BaseModel):
     id: Optional[int] = None
     name: str
