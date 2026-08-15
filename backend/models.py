@@ -122,3 +122,23 @@ class AgentResponse(BaseModel):
             )
         return self
 
+class QuestionLog(BaseModel):
+    id: Optional[int] = None
+    question: str
+    answer: str
+    source_policy_ids: list[str]
+    action_taken = ActionTaken
+    confidence = Confidence
+    escalation_reason = Optional[str] = None
+    timestamp: datetime = datetime.now()
+
+class GapEntry(BaseModel):
+    id: Optional[int] = None
+    question_log_id: int
+    question: str
+    normalized_question: str
+    count: int = 1
+    status: Literal["pending", "approved", "dismissed"] = "pending"
+    operator_note: Optional[str] = None
+    created_at: datetime = datetime.now()
+    resolved_at: Optional[datetime] = None
