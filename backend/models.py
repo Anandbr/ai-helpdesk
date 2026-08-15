@@ -159,3 +159,11 @@ class GapEntry(BaseModel):
     operator_note: Optional[str] = None
     created_at: datetime = datetime.now()
     resolved_at: Optional[datetime] = None
+
+class GapStatusUpdate(BaseModel):
+    status: Literal["approved", "dismissed"]
+    operator_note: Optional[str] = None
+
+class ChatRequest(BaseModel):
+    question: str
+    session_id: Optional[str] = None
