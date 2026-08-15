@@ -42,3 +42,15 @@ Assumption:
 In production:
   Sensitivity changes require a code change and deliberate review by an admin.
   Could add a separate admin-only endpoint with additional confirmation step.
+
+  
+## Gap approval title collision
+
+When operator approves a gap and types a title that slugifies to an existing policy id, we return a 409 error.
+
+Assumption:
+  We tell the operator the policy exists and ask them to edit it instead.
+
+Production improvement:
+  Before showing the approval form, check for similar existing policies and surface them to the operator.
+  Prevent the collision before it happens rather than erroring after.
