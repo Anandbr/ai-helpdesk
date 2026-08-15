@@ -1,122 +1,174 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import heroImg from './assets/hero.png'
-import './App.css'
+import { useState, useEffect } from "react";
+import ParentView from "./ParentView";
+import OperatorView from "./OperatorView";
+import { API, ApiError } from "./api";
+import "./index.css";
 
-function App() {
-  const [count, setCount] = useState(0)
+function PinGate({ onSuccess }) {
+  const [pin, setPin] = useState("");
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  async function tryPin(e) {
+    e.preventDefault();
+    setLoading(true);
+    setError("");
+    try {
+      API.setPin(pin);
+      await API.operator.policies();
+      onSuccess();
+    } catch (err) {
+      API.clearPin();
+      if (err instanceof ApiError && err.status === 401) {
+        setError("Incorrect PIN. Try again.");
+      } else {
+        setError("Connection error. Is the server running?");
+      }
+    } finally {
+      setLoading(false);
+    }
+  }
 
   return (
-    <>
-      <section id="center">
-        <div className="hero">
-          <img src={heroImg} className="base" width="170" height="179" alt="" />
-          <img src={reactLogo} className="framework" alt="React logo" />
-          <img src={viteLogo} className="vite" alt="Vite logo" />
+    <div style={{
+      minHeight: "100vh",
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      background: "var(--bw-bg)",
+    }}>
+      <div style={{
+        background: "var(--bw-surface)",
+        borderRadius: "var(--radius-card)",
+        padding: "2rem",
+        width: "100%",
+        maxWidth: "360px",
+        boxShadow: "0 4px 24px rgba(0,0,0,0.08)",
+      }}>
+        <div style={{
+          background: "var(--bw-indigo)",
+          borderRadius: "12px",
+          padding: "1rem",
+          marginBottom: "1.5rem",
+          textAlign: "center",
+          color: "white",
+        }}>
+          <div style={{ fontSize: "2rem" }}>☀️</div>
+          <div style={{
+            fontWeight: 700,
+            fontSize: "1rem",
+            marginTop: "0.5rem",
+          }}>
+            Staff Control Center
+          </div>
+          <div style={{ fontSize: "0.8rem", opacity: 0.8 }}>
+            Sunshine Early Learning Center
+          </div>
         </div>
-        <div>
-          <h1>Get started</h1>
-          <p>
-            Edit <code>src/App.jsx</code> and save to test <code>HMR</code>
-          </p>
-        </div>
-        <button
-          type="button"
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
-        >
-          Count is {count}
-        </button>
-      </section>
 
-      <div className="ticks"></div>
+        <form onSubmit={tryPin}>
+          <label style={{
+            display: "block",
+            fontSize: "0.85rem",
+            fontWeight: 600,
+            color: "var(--bw-text-soft)",
+            marginBottom: "0.5rem",
+          }}>
+            Staff PIN
+          </label>
+          <input
+            type="password"
+            value={pin}
+            onChange={e => setPin(e.target.value)}
+            placeholder="Enter PIN"
+            style={{
+              width: "100%",
+              padding: "0.75rem 1rem",
+              border: `1.5px solid ${error
+                ? "var(--bw-coral)"
+                : "var(--bw-border)"}`,
+              borderRadius: "10px",
+              fontSize: "1rem",
+              outline: "none",
+              marginBottom: "0.75rem",
+              fontFamily: "var(--font)",
+            }}
+          />
+          {error && (
+            <div style={{
+              color: "var(--bw-coral)",
+              fontSize: "0.85rem",
+              marginBottom: "0.75rem",
+            }}>
+              {error}
+            </div>
+          )}
+          <button
+            type="submit"
+            disabled={loading || !pin}
+            style={{
+              width: "100%",
+              padding: "0.75rem",
+              background: "var(--bw-indigo)",
+              color: "white",
+              border: "none",
+              borderRadius: "10px",
+              fontSize: "1rem",
+              fontWeight: 600,
+              opacity: loading || !pin ? 0.6 : 1,
+            }}
+          >
+            {loading ? "Checking..." : "Sign In"}
+          </button>
+        </form>
 
-      <section id="next-steps">
-        <div id="docs">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#documentation-icon"></use>
-          </svg>
-          <h2>Documentation</h2>
-          <p>Your questions, answered</p>
-          <ul>
-            <li>
-              <a href="https://vite.dev/" target="_blank">
-                <img className="logo" src={viteLogo} alt="" />
-                Explore Vite
-              </a>
-            </li>
-            <li>
-              <a href="https://react.dev/" target="_blank">
-                <img className="button-icon" src={reactLogo} alt="" />
-                Learn more
-              </a>
-            </li>
-          </ul>
+        <div style={{
+          textAlign: "center",
+          marginTop: "1rem",
+          fontSize: "0.8rem",
+          color: "var(--bw-text-soft)",
+        }}>
+          Demo PIN: 1234
         </div>
-        <div id="social">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#social-icon"></use>
-          </svg>
-          <h2>Connect with us</h2>
-          <p>Join the Vite community</p>
-          <ul>
-            <li>
-              <a href="https://github.com/vitejs/vite" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#github-icon"></use>
-                </svg>
-                GitHub
-              </a>
-            </li>
-            <li>
-              <a href="https://chat.vite.dev/" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#discord-icon"></use>
-                </svg>
-                Discord
-              </a>
-            </li>
-            <li>
-              <a href="https://x.com/vite_js" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#x-icon"></use>
-                </svg>
-                X.com
-              </a>
-            </li>
-            <li>
-              <a href="https://bsky.app/profile/vite.dev" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#bluesky-icon"></use>
-                </svg>
-                Bluesky
-              </a>
-            </li>
-          </ul>
-        </div>
-      </section>
-
-      <div className="ticks"></div>
-      <section id="spacer"></section>
-    </>
-  )
+      </div>
+    </div>
+  );
 }
 
-export default App
+export default function App() {
+  const [path, setPath] = useState(
+    window.location.pathname
+  );
+  const [pinVerified, setPinVerified] = useState(!!API.pin);
+
+  useEffect(() => {
+    const handler = () => setPath(window.location.pathname);
+    window.addEventListener("popstate", handler);
+    return () => window.removeEventListener("popstate", handler);
+  }, []);
+
+  function navigate(to) {
+    window.history.pushState({}, "", to);
+    setPath(to);
+  }
+
+  if (path.startsWith("/operator")) {
+    if (!pinVerified) {
+      return (
+        <PinGate onSuccess={() => setPinVerified(true)} />
+      );
+    }
+    return (
+      <OperatorView
+        onLogout={() => {
+          API.clearPin();
+          setPinVerified(false);
+          navigate("/");
+        }}
+        navigate={navigate}
+      />
+    );
+  }
+
+  return <ParentView navigate={navigate} />;
+}

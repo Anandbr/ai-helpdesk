@@ -87,3 +87,13 @@ Production:
   - Role-based access control (admin vs teacher vs owner)
   - Audit log of who changed what policy
   - Multi-factor authentication for sensitive operations like custody policies
+
+## Hand-rolled routing vs React Router
+
+We have exactly 2 routes: / and /operator.
+React Router earns its keep at 3+ routes or nested navigation.
+
+For 2 routes: window.location.pathname check + history.pushState + popstate listener = ~20 lines, zero dependencies.
+
+Upgrade path: adding a third route (teacher view, analytics, etc.) is the threshold to add
+React Router. Refactor is straightforward — wrap in BrowserRouter, replace pathname checks with Route components.
