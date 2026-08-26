@@ -69,7 +69,10 @@ const API = {
         body: JSON.stringify(update),
       }),
     stale: () => API.request("/operator/stale"),
+    visitors: () => API.request("/operator/visitors"),
   },
 };
 
+// Fire and forget — log the visit
+fetch('/api/ping').catch(() => {});
 export { API, ApiError };

@@ -1,8 +1,9 @@
 import os
 import re
+import httpx
 from contextlib import asynccontextmanager
 from datetime import date as date_type
-from fastapi import FastAPI, Header, HTTPException, APIRouter
+from fastapi import FastAPI, Header, HTTPException, APIRouter, Request
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse
 
@@ -44,6 +45,40 @@ def require_operator(x_operator_pin: str = Header(None)):
 def ask(req: ChatRequest):
     return harness.ask(req.question)
 
+@app.get("/api/ping")
+async def ping(request: Request):
+    """
+    Called by frontend on load.
+    Grabs real IP, looks up geo, logs it.
+    Fire and forget — never blocks the UI.
+    """
+    # X-Forwarded-For has the real IP
+    # Railway proxy rewrites the direct IP
+    forwarded = request.headers.get("X-Forwarded-For")
+    ip = forwarded.split(",")[0].strip() if forwarded else (
+        request.client.host
+    )
+
+    city = region = country = org = None
+
+    try:
+        async with httpx.AsyncClient(timeout=3.0) as client:
+            resp = await client.get(
+                f"https://ipinfo.io/{ip}/json"
+            )
+            if resp.status_code == 200:
+                data = resp.json()
+                city = data.get("city")
+                region = data.get("region")
+                country = data.get("country")
+                org = data.get("org")
+    except Exception:
+        pass  # geo lookup failed — still log the IP
+
+    db.insert_visitor_log(ip, city, region, country, org)
+    return {"ok": True}
+
+
 @app.get("/api/policies")
 def get_policies_public():
     """
@@ -84,6 +119,10 @@ def _slugify(title: str) -> str:
 @operator.get("/policies")
 def get_policies():
     return db.get_all_policies()
+
+@operator.get("/visitors")
+def get_visitors():
+    return db.get_visitor_logs()
 
 
 @operator.post("/policies")

@@ -44,6 +44,17 @@ CREATE TABLE IF NOT EXISTS question_log (
     timestamp TEXT NOT NULL
 );
 
+CREATE TABLE IF NOT EXISTS visitor_logs (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    ip TEXT,
+    city TEXT,
+    region TEXT,
+    country TEXT,
+    org TEXT,
+    timestamp TEXT NOT NULL
+);
+
+
 CREATE TABLE IF NOT EXISTS gap_entries (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     question_log_id INTEGER NOT NULL,
@@ -330,5 +341,34 @@ def get_stale_policies() -> list[dict]:
                AND expires <= ?
                ORDER BY expires""",
             (soon,)
+        ).fetchall()
+    return [dict(r) for r in rows]
+
+# ─────────────────────────────────────────
+# Visitor log queries
+# ─────────────────────────────────────────
+def insert_visitor_log(
+    ip: str,
+    city: str | None,
+    region: str | None,
+    country: str | None,
+    org: str | None,
+) -> None:
+    with get_db() as conn:
+        conn.execute(
+            """INSERT INTO visitor_logs
+               (ip, city, region, country, org, timestamp)
+               VALUES (?, ?, ?, ?, ?, ?)""",
+            (ip, city, region, country, org,
+             datetime.now().isoformat())
+        )
+
+
+def get_visitor_logs() -> list[dict]:
+    with get_db() as conn:
+        rows = conn.execute(
+            """SELECT * FROM visitor_logs
+               ORDER BY timestamp DESC
+               LIMIT 100"""
         ).fetchall()
     return [dict(r) for r in rows]
